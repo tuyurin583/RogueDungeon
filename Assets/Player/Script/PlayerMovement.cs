@@ -37,7 +37,9 @@ public class PlayerMovement : MonoBehaviour
         //ジャンプ処理
         if (Input.GetButtonDown("Jump"))
         {
+            Debug.Log("jump");
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            animator.SetBool("IsInAir", true);
         }
 
         //移動を適用

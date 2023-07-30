@@ -69,7 +69,7 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 785267643850636061, guid: 10a99c550d68610468d14ba69c5e5309, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 1461547605271345324}
+      addedObject: {fileID: 3693088260854432867}
     - targetCorrespondingSourceObject: {fileID: 785267643850636061, guid: 10a99c550d68610468d14ba69c5e5309, type: 3}
       insertIndex: -1
       addedObject: {fileID: 4512251881862460547}
@@ -84,32 +84,20 @@ GameObject:
   m_CorrespondingSourceObject: {fileID: 785267643850636061, guid: 10a99c550d68610468d14ba69c5e5309, type: 3}
   m_PrefabInstance: {fileID: 4747607461796588107}
   m_PrefabAsset: {fileID: 0}
---- !u!143 &1461547605271345324
-CharacterController:
+--- !u!114 &3693088260854432867
+MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 5406350453098287446}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
-  m_SlopeLimit: 75
-  m_StepOffset: 0.3
-  m_SkinWidth: 0.08
-  m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 1, z: 0}
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: abf1fe5d04a891d499d312ba8bdc004e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  moveSpeeed: 5
+  jumpForce: 10
 --- !u!136 &4512251881862460547
 CapsuleCollider:
   m_ObjectHideFlags: 0
