@@ -41,6 +41,10 @@ public class PlayerMovement : MonoBehaviour
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             animator.SetBool("IsInAir", true);
         }
+        else
+        {
+            animator.SetBool("IsInAir", false);
+        }
 
         //ˆÚ“®‚ð“K—p
         rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z);
