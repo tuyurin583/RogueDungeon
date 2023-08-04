@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PlayerCameraController : MonoBehaviour
 {
@@ -16,8 +17,7 @@ public class PlayerCameraController : MonoBehaviour
     public float minYAngle=-20f;
     public float maxYAngle = 80f;
     //マウス移動の入力値を保存する変数
-    private float mouseX;
-    private float mouseY;
+    private Vector2 mouseInput;
 
     //回転角度の制限値
     private const float MaxAngle = 180f;
@@ -36,22 +36,21 @@ public class PlayerCameraController : MonoBehaviour
 	private void Update()
 	{
         //マウスの移動量を取得
-        mouseX = Input.GetAxis("Mouse X") * rotationSpeed;
-        mouseY = -Input.GetAxis("Mouse Y") * rotationSpeed;
+        mouseInput = Mouse.current.delta.ReadValue() * rotationSpeed;
 
         //カメラの回転角度を制限する
         float currentAngle = transform.eulerAngles.x;
-        float desiredAngle = currentAngle + mouseY;
+        float desiredAngle = currentAngle + mouseInput.y;
 
         if (desiredAngle > MaxAngle)
         {
             desiredAngle -= FullCircle;
         }
         desiredAngle = Mathf.Clamp(desiredAngle, minYAngle, maxYAngle);
-        mouseY = desiredAngle - currentAngle;
+        mouseInput.y = desiredAngle - currentAngle;
 
         //プレイヤーの回転をマウスのX移動に応じて更新
-        playerTransform.Rotate(Vector3.up * mouseX);
+        playerTransform.Rotate(Vector3.up * mouseInput.x);
         // カメラ自体のX軸方向の回転をマウスのY移動に応じて更新
         transform.localRotation = Quaternion.Euler(desiredAngle, 0f, 0f);
 
