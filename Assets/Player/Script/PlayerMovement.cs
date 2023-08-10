@@ -21,8 +21,7 @@ public class PlayerMovement : MonoBehaviour
     private LayerMask groundLayer;
     // 地面に接地しているかどうか
     private bool isGrounded;
-    //ジャンプ中かどうか
-    //private bool Isjump=false;
+    
 
     //移動アクション
     [SerializeField]
@@ -30,6 +29,9 @@ public class PlayerMovement : MonoBehaviour
     //ジャンプアクション
     [SerializeField]
     private InputAction jump;
+
+    //PlayerAttackのスクリプトの参照
+    private PlayerAttack playerAttack;
 
     // Start is called before the first frame update
     void Start()
@@ -40,26 +42,31 @@ public class PlayerMovement : MonoBehaviour
         //移動アクションを作成
         movement = GetComponent<PlayerInput>().actions["Move"];
         jump = GetComponent<PlayerInput>().actions["Jump"];
+        //PlayerAttackスクリプトの参照を取得
+        playerAttack = GetComponent<PlayerAttack>();
     }
 
    
 
 	private void FixedUpdate()
 	{
-        //キーボードの入力を取得
-        Vector2 moveInput = movement.ReadValue<Vector2>();
-        //移動方向を計算
-        Vector3 moveDirection = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized * moveSpeeed;
-        //移動を適用
-        rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z);
-        //アニメションを更新
-        UpdateAnimation(moveInput);
+        if (!playerAttack.IsAttack)
+        {
+            //キーボードの入力を取得
+            Vector2 moveInput = movement.ReadValue<Vector2>();
+            //移動方向を計算
+            Vector3 moveDirection = (transform.forward * moveInput.y + transform.right * moveInput.x).normalized * moveSpeeed;
+            //移動を適用
+            rb.velocity = new Vector3(moveDirection.x, rb.velocity.y, moveDirection.z);
+            //アニメションを更新
+            UpdateAnimation(moveInput);
 
-        //地面に接地しているかチェック
-        isGrounded = CheckGrounded();
+            //地面に接地しているかチェック
+            isGrounded = CheckGrounded();
+        }
 
         // ジャンプ処理
-        if (jump.ReadValue<float>() > 0)
+        if (jump.ReadValue<float>() > 0&&isGrounded&&!playerAttack.IsAttack)
         {
             Jump();
         }

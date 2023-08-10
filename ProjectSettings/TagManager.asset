@@ -4,12 +4,15 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - CinemachineTarget
+  - Floor
+  - Wall
+  - OuterCorner
+  - Room
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - Enemy
+  - 
   - Water
   - UI
   - 

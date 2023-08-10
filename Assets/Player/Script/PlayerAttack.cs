@@ -15,12 +15,12 @@ public class PlayerAttack : MonoBehaviour
     public LayerMask enemyLayer;
     //アニメーター
     Animator animator;
-    //攻撃アクション
-    private InputAction attackAction;
+   
 
     //コンボアクション用
     //攻撃用アクションフラグ
-    private bool IsAttack;
+    [SerializeField]
+    public bool IsAttack;
     //コンボ判定用フラグ
     private int combo_Flag;
     //コンボ回数
@@ -36,8 +36,7 @@ public class PlayerAttack : MonoBehaviour
     {
         animator = GetComponent<Animator>();
 
-        //攻撃アクションを作成
-        attackAction = GetComponent<PlayerInput>().actions["Attack"];
+        
     }
 
 	private void Update()
@@ -74,7 +73,6 @@ public class PlayerAttack : MonoBehaviour
         {
             //コンボ入力を有効(未入力)にする
             combo_Flag = 1;
-            Debug.Log("Enable");
         }
     }
 
@@ -117,8 +115,8 @@ public class PlayerAttack : MonoBehaviour
                 //コンボ回数が2の時の処理(3回目のコンボ攻撃)
                 case 2:
                     tl[2].Stop();
-                    tl[3].Play();
                     combo_Count = 3;
+                    AttackEnd();
                     break;
             }
             //コンボ入力を無効(0)にする
@@ -136,6 +134,7 @@ public class PlayerAttack : MonoBehaviour
         }
         //攻撃フラグをOFFにする
         IsAttack = false;
+        Debug.Log(IsAttack);
         //コンボ回数を0にする
         combo_Count = 0;
     }
