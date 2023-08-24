@@ -13,8 +13,6 @@ public class PlayerAttack : MonoBehaviour
     public float atk = 10f;
     //攻撃用のレイヤーマスク
     public LayerMask enemyLayer;
-    //アニメーター
-    Animator animator;
    
 
     //コンボアクション用
@@ -34,8 +32,6 @@ public class PlayerAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        animator = GetComponent<Animator>();
-
         
     }
 
@@ -139,8 +135,22 @@ public class PlayerAttack : MonoBehaviour
         combo_Count = 0;
     }
 
+	private void OnTriggerEnter(Collider collider)
+	{
+        GameObject hitobj = collider.gameObject;
 
-    private void OnDrawGizmosSelected()
+        //敵かどうか調べる
+        if (!hitobj.CompareTag("Enemy")) { return; }
+        //ヒットしたオブジェクトのIDamageableを取得する
+        IDamageable damageHit = hitobj.GetComponent<IDamageable>();
+        //ダメージ判定が実装されていなければダメージ判定を行わない
+        if (damageHit == null) { return; }
+        //ダメージを与える
+        damageHit.Damage(atk);
+	}
+
+
+	private void OnDrawGizmosSelected()
 	{
         Gizmos.color = Color.red;
         Gizmos.DrawWireSphere(transform.position, attackRange);

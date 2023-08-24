@@ -4,15 +4,13 @@
 TagManager:
   serializedVersion: 2
   tags:
-  - Floor
-  - Wall
-  - OuterCorner
   - Room
+  - Enemy
   layers:
   - Default
   - TransparentFX
   - Ignore Raycast
-  - 
+  - Midleboss Room
   - Water
   - UI
   - 

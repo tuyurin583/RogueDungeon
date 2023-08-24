@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Linq;
 
 public class PlayerMovement : MonoBehaviour
 {
@@ -44,6 +45,8 @@ public class PlayerMovement : MonoBehaviour
         jump = GetComponent<PlayerInput>().actions["Jump"];
         //PlayerAttackスクリプトの参照を取得
         playerAttack = GetComponent<PlayerAttack>();
+
+      
     }
 
    
@@ -77,8 +80,12 @@ public class PlayerMovement : MonoBehaviour
         }
     }
 
-    //アニメションを更新する関数
-    private void UpdateAnimation(Vector2 moveInput)
+   
+
+	
+
+	//アニメションを更新する関数
+	private void UpdateAnimation(Vector2 moveInput)
     {
         float horizontalInput = moveInput.x;
         float verticalInput = moveInput.y;
