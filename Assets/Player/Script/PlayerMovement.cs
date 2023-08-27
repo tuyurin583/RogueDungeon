@@ -10,7 +10,6 @@ public class PlayerMovement : MonoBehaviour
     Animator animator;
     //RigidBody
     Rigidbody rb;
-
     //ˆÚ“®‘¬“x
     [SerializeField]
     public float moveSpeeed = 5f;

@@ -6,15 +6,10 @@ using UnityEngine.Playables;
 
 public class PlayerAttack : MonoBehaviour
 {
-    //攻撃の範囲
-    [SerializeField]
-    public float attackRange = 2f;
-    //攻撃のダメージ(攻撃力)
-    public float atk = 10f;
     //攻撃用のレイヤーマスク
     public LayerMask enemyLayer;
-   
-
+    [SerializeField]
+    private float atk=30;
     //コンボアクション用
     //攻撃用アクションフラグ
     [SerializeField]
@@ -32,7 +27,7 @@ public class PlayerAttack : MonoBehaviour
     // Start is called before the first frame update
     void Start()
     {
-        
+       
     }
 
 	private void Update()
@@ -147,12 +142,5 @@ public class PlayerAttack : MonoBehaviour
         if (damageHit == null) { return; }
         //ダメージを与える
         damageHit.Damage(atk);
-	}
-
-
-	private void OnDrawGizmosSelected()
-	{
-        Gizmos.color = Color.red;
-        Gizmos.DrawWireSphere(transform.position, attackRange);
 	}
 }

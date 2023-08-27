@@ -18,7 +18,7 @@ public class SwordSkelton : BaseEnemy
 		//攻撃
 		Attack,
 		//ブロック
-		Block,
+		Shield,
 		//ダメージ
 		Damage,
 		//死亡
@@ -34,6 +34,8 @@ public class SwordSkelton : BaseEnemy
 	private int currnetPointIndex=0;
 	[SerializeField]
 	private SphereCollider searchArea;
+	[SerializeField]
+	private float delay=5;
 
 	// Start is called before the first frame update
 	void Start()
@@ -53,14 +55,14 @@ public class SwordSkelton : BaseEnemy
 			case SkeltonState.Idle:
 				IdleState();
 				break;
-
 			case SkeltonState.Move:
 				MoveState();
 				break;
 			case SkeltonState.Attack:
 				AttackState();
 				break;
-			case SkeltonState.Block:
+			case SkeltonState.Shield:
+				ShieldState();
 				break;
 		}
 
@@ -93,6 +95,17 @@ public class SwordSkelton : BaseEnemy
 		agent.isStopped = true;
 		animator.SetBool("Run", false);
 		timeline[0].Play();
+		//state = SkeltonState.Shield;
+	}
+
+	public void ShieldState()
+	{
+		//攻撃のタイムラインの再生を止める
+		timeline[0].Stop();
+		//ブロック用のタイムラインを再生
+		timeline[1].Play();
+
+
 	}
 
 	public void FreezeState()
@@ -113,11 +126,16 @@ public class SwordSkelton : BaseEnemy
 			var positionDiff = collider.transform.position - transform.position;
 			// 敵から見たプレイヤーの方向
 			var angle = Vector3.Angle(transform.forward, positionDiff);
+			var distanceToPlayer = (collider.transform.position - transform.position).magnitude;
 			//視野内にプレイヤーがいたら追いかける
 			if (angle <= searchAngle)
 			{
 				agent.destination = collider.transform.position;
-				state = SkeltonState.Attack;
+				//プレイヤーとの距離が一定値以下になったら攻撃状態にする
+				if (distanceToPlayer <= attackDistance)
+				{
+					state = SkeltonState.Attack;
+				}
 			}
 			else
 			{

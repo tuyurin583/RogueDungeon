@@ -29,7 +29,8 @@ public class BaseEnemy : MonoBehaviour,IDamageable
 	public float searchAngle = 45f;
 	[SerializeField, Header("ˆÚ“®‘¬“x")]
 	protected float Speed;
-
+	[SerializeField]
+	protected float attackDistance=5;
 
 	// Start is called before the first frame update
 	void Start()

@@ -30,6 +30,7 @@ Transform:
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 4550492217135136084}
+  - {fileID: 2459260353072053213}
   m_Father: {fileID: 4556828096434677528}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &349061437966225176
@@ -64,6 +65,59 @@ Transform:
   - {fileID: 1146406908652269817}
   m_Father: {fileID: 8080290402453456935}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &381049630977015029
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 2459260353072053213}
+  - component: {fileID: 2310965703130270343}
+  m_Layer: 0
+  m_Name: Shield
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &2459260353072053213
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381049630977015029}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.35, y: -9, z: 26.704159}
+  m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 6201250644158795137}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!320 &2310965703130270343
+PlayableDirector:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 381049630977015029}
+  m_Enabled: 1
+  serializedVersion: 3
+  m_PlayableAsset: {fileID: 11400000, guid: 635b1b8e92e699d4f829c46b2c94ce6e, type: 2}
+  m_InitialState: 1
+  m_WrapMode: 2
+  m_DirectorUpdateMode: 1
+  m_InitialTime: 0
+  m_SceneBindings:
+  - key: {fileID: -6628555787502140539, guid: 635b1b8e92e699d4f829c46b2c94ce6e, type: 2}
+    value: {fileID: 2194005760231115240}
+  - key: {fileID: -9154662999035119652, guid: 635b1b8e92e699d4f829c46b2c94ce6e, type: 2}
+    value: {fileID: 27670433653857085}
+  m_ExposedReferences:
+    m_References: []
 --- !u!1 &447598704517511927
 GameObject:
   m_ObjectHideFlags: 0
@@ -548,6 +602,7 @@ MonoBehaviour:
   deathEffect: {fileID: 0}
   searchAngle: 45
   Speed: 0
+  attackDistance: 5
   state: 0
   patrolPositions: []
   searchArea: {fileID: 0}
@@ -2620,6 +2675,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 7c7da1f49932da64a97904e8cb275f76, type: 3}
+--- !u!1 &27670433653857085 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 5063047510791011200, guid: 7c7da1f49932da64a97904e8cb275f76, type: 3}
+  m_PrefabInstance: {fileID: 5053532454731096253}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &8601640744383682662 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 3566545587860125915, guid: 7c7da1f49932da64a97904e8cb275f76, type: 3}
