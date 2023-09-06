@@ -5,9 +5,10 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
+using UnityEngine.Playables;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class SwordSkelton : BaseEnemy
+public class SwordSkelton : BaseEnemy, IDamageable
 {
 	public enum SkeltonState
 	{
@@ -17,8 +18,6 @@ public class SwordSkelton : BaseEnemy
 		Move,
 		//攻撃
 		Attack,
-		//ブロック
-		Shield,
 		//ダメージ
 		Damage,
 		//死亡
@@ -26,25 +25,23 @@ public class SwordSkelton : BaseEnemy
 		Freeze,
 	}
 	//キャラの状態
-	public SkeltonState state=SkeltonState.Idle;
+	public SkeltonState state = SkeltonState.Idle;
 	//巡回する位置
 	[SerializeField]
 	private Transform[] patrolPositions;
 	//現在の目的地
-	private int currnetPointIndex=0;
+	private int currnetPointIndex = 0;
 	[SerializeField]
 	private SphereCollider searchArea;
-	[SerializeField]
-	private float delay=5;
+	
 
 	// Start is called before the first frame update
 	void Start()
 	{
 		agent = GetComponent<NavMeshAgent>();
-		animator=GetComponent<Animator>();
+		animator = GetComponent<Animator>();
 		//最初の目的地を設定
 		agent.SetDestination(patrolPositions[0].position);
-
 	}
 
 	// Update is called once per frame
@@ -61,9 +58,6 @@ public class SwordSkelton : BaseEnemy
 			case SkeltonState.Attack:
 				AttackState();
 				break;
-			case SkeltonState.Shield:
-				ShieldState();
-				break;
 		}
 
 	}
@@ -78,12 +72,12 @@ public class SwordSkelton : BaseEnemy
 	private void MoveState()
 	{
 		//キャラが動けるようにする
-		agent.isStopped=false;
+		agent.isStopped = false;
 		animator.SetBool("Move", true);
 		if (agent.remainingDistance <= agent.stoppingDistance)
 		{
 			// 目的地の番号を１更新
-			currnetPointIndex=(currnetPointIndex + 1) % patrolPositions.Length;
+			currnetPointIndex = (currnetPointIndex + 1) % patrolPositions.Length;
 			// 目的地を次の場所に設定
 			agent.SetDestination(patrolPositions[currnetPointIndex].position);
 		}
@@ -94,25 +88,51 @@ public class SwordSkelton : BaseEnemy
 		//キャラの移動を止める
 		agent.isStopped = true;
 		animator.SetBool("Run", false);
-		timeline[0].Play();
-		//state = SkeltonState.Shield;
+		TLAttack[0].Play();
 	}
 
-	public void ShieldState()
+
+	public void Damage(float damage)
 	{
-		//攻撃のタイムラインの再生を止める
-		timeline[0].Stop();
-		//ブロック用のタイムラインを再生
-		timeline[1].Play();
-
-
+		//既に死亡していたらダメージを受けない
+		if (IsDead) return;
+		
+		//ダメージ用のタイムラインを再生
+		TLDamage.Play();
+		currnethp -= damage;
+		Debug.Log("HP" + currnethp);
+		if (currnethp <= 0)
+		{
+			Death();
+		}
+		
 	}
+
+	public void Death()
+	{
+		// 既に死亡していたら処理しない
+		if (IsDead) return;
+		IsDead = true;
+		this.enabled = false;
+		//死亡用のタイムラインを再生
+		TLDeath.Play();
+		//敵の動きを止める
+		agent.isStopped = true;
+		
+	}
+
+	public void DeathObject()
+	{
+		Destroy(gameObject);
+	}
+
+	
 
 	public void FreezeState()
 	{
 		//キャラを動けるようにする
 		agent.isStopped = false;
-		Debug.Log("フリーズ");
+		TLAttack[0].Stop();
 		state = SkeltonState.Idle;
 	}
 
@@ -120,8 +140,8 @@ public class SwordSkelton : BaseEnemy
 	{
 		if (collider.CompareTag("Player"))
 		{
-				animator.SetBool("Move", false);
-				animator.SetBool("Run", true);
+			animator.SetBool("Move", false);
+			animator.SetBool("Run", true);
 			// 自身（敵）とプレイヤーの距離
 			var positionDiff = collider.transform.position - transform.position;
 			// 敵から見たプレイヤーの方向
@@ -144,7 +164,7 @@ public class SwordSkelton : BaseEnemy
 		}
 	}
 
-
+	
 #if UNITY_EDITOR
 	private void OnDrawGizmos()
 	{

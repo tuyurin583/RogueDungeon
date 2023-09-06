@@ -13,7 +13,7 @@ TagManager:
   - Midleboss Room
   - Water
   - UI
-  - 
+  - PostProcessing
   - 
   - 
   - 
@@ -42,4 +42,7 @@ TagManager:
   m_SortingLayers:
   - name: Default
     uniqueID: 0
+    locked: 0
+  - name: PostProcessing
+    uniqueID: 3333002859
     locked: 0
