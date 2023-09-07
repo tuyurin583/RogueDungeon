@@ -15,11 +15,8 @@ public class BaseEnemy : MonoBehaviour
 	protected NavMeshAgent agent;
 	[SerializeField,Header("Ž‹–ì")]
 	public float searchAngle = 45f;
-	[SerializeField, Header("ˆÚ“®‘¬“x")]
-	protected float Speed;
 	[SerializeField]
 	protected float attackDistance=5;
-	protected bool IsBreak = false;
 	protected bool IsDead = false;
 	[Header("HP")]
 	[SerializeField]
@@ -43,7 +40,7 @@ public class BaseEnemy : MonoBehaviour
         animator=GetComponent<Animator>();
         rb=GetComponent<Rigidbody>();
 		agent=GetComponent<NavMeshAgent>();
-		currnethp = Maxhp;
+		
 
 
 	}

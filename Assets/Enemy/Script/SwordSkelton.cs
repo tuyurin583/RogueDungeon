@@ -42,6 +42,7 @@ public class SwordSkelton : BaseEnemy, IDamageable
 		animator = GetComponent<Animator>();
 		//Å‰‚Ì–Ú“I’n‚ğİ’è
 		agent.SetDestination(patrolPositions[0].position);
+		currnethp = Maxhp;
 	}
 
 	// Update is called once per frame
@@ -89,6 +90,7 @@ public class SwordSkelton : BaseEnemy, IDamageable
 		agent.isStopped = true;
 		animator.SetBool("Run", false);
 		TLAttack[0].Play();
+
 	}
 
 
@@ -123,7 +125,7 @@ public class SwordSkelton : BaseEnemy, IDamageable
 
 	public void DeathObject()
 	{
-		Destroy(gameObject);
+		Destroy(this.gameObject);
 	}
 
 	

@@ -7,94 +7,92 @@ using UnityEngine.AI;
 using UnityEngine.Playables;
 
 [RequireComponent(typeof(NavMeshAgent))]
-public class Golem : BaseEnemy,IDamageable
+public class Golem : BaseEnemy, IDamageable
 {
-    public enum GolemState
-    {
-        Idle,
-        Move,
-        Attack,
-        Damage,
-        Death,
+	public enum GolemState
+	{
+		Idle,
+		Move,
+		Attack,
+		Damage,
+		Death,
 		Freeze
 	}
-	GolemState state = GolemState.Idle;
-	//巡回する位置
-	[SerializeField]
-	private Transform[] patrolPositions;
-	//現在の目的地
-	private int currnetPointIndex = 0;
+	public GolemState state = GolemState.Idle;
 	[SerializeField]
 	private SphereCollider searchArea;
+	[SerializeField]
+	private GameObject target;
 	// Start is called before the first frame update
 	void Start()
-    {
+	{
 		agent = GetComponent<NavMeshAgent>();
-		animator= GetComponent<Animator>();
-		//最初の目的地を設定
-		agent.SetDestination(patrolPositions[0].position);
+		animator = GetComponent<Animator>();
+		currnethp = Maxhp;
 
-		if (agent == null)
-		{
-			Debug.LogError("NavMeshAgent is not found on Minotaur.");
-		}
+		
 	}
 
-    // Update is called once per frame
-    void Update()
-    {
-        switch (state)
-        {
-            case GolemState.Idle:
-                IdleState();
-                break;
-            case GolemState.Move:
-                MoveState();
-                break;
-				case GolemState.Attack:
+	// Update is called once per frame
+	void Update()
+	{
+		switch (state)
+		{
+			case GolemState.Idle:
+				IdleState();
+				break;
+			case GolemState.Move:
+				MoveState();
+				break;
+			case GolemState.Attack:
 				AttackState();
 				break;
-        }
-    }
-
-    private void IdleState()
-    {
-		state = GolemState.Move;
+		}
 	}
 
-    private void MoveState()
-    {
-		animator.SetBool("Run", true);
-		if (agent.remainingDistance <= agent.stoppingDistance)
+	private void IdleState()
+	{
+
+	}
+
+	private void MoveState()
+	{
+		//ターゲットがいる時
+		if (target)
 		{
-			// 目的地の番号を１更新
-			currnetPointIndex = (currnetPointIndex + 1) % patrolPositions.Length;
-			// 目的地を次の場所に設定
-			agent.SetDestination(patrolPositions[currnetPointIndex].position);
+			//ターゲットの座標に向ける
+			transform.LookAt(target.transform);
+			//プレイヤーを追いかける
+			agent.destination = target.transform.position;
+			// 自分とターゲットの距離を計算
+			float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+			//自分とターゲットの距離がattackdistanceよりも小さい時
+			if (distanceToTarget <= attackDistance)
+			{
+				//Attack状態に推移する
+				state = GolemState.Attack;
+			}
 		}
+		else
+		{
+			state = GolemState.Idle;
+		}
+		
 	}
 
 	private void AttackState()
 	{
-		//キャラの移動を止める
 		agent.isStopped = true;
-		animator.SetBool("Run", false);
 		TLAttack[0].Play();
-	}
-
-	private void Attack2State()
-	{
-		TLAttack[0].Stop();
-		TLAttack[1].Play();
 		state = GolemState.Freeze;
 	}
 
+
 	public void FreezeState()
 	{
-		//キャラを動けるようにする
+		TLAttack[0].Stop();
 		agent.isStopped = false;
-		TLAttack[1].Stop();
-		state = GolemState.Idle;
+		state = GolemState.Move;
 	}
 
 	public void OnDetectObject(Collider collider)
@@ -102,40 +100,23 @@ public class Golem : BaseEnemy,IDamageable
 		if (collider.CompareTag("Player"))
 		{
 			animator.SetBool("Run", true);
-			// 自身（敵）とプレイヤーの距離
-			var positionDiff = collider.transform.position - transform.position;
-			// 敵から見たプレイヤーの方向
-			var angle = Vector3.Angle(transform.forward, positionDiff);
-			var distanceToPlayer = (collider.transform.position - transform.position).magnitude;
-			//視野内にプレイヤーがいたら追いかける
-			if (angle <= searchAngle)
-			{
-				agent.destination = collider.transform.position;
-				//プレイヤーとの距離が一定値以下になったら攻撃状態にする
-				if (distanceToPlayer <= attackDistance)
-				{
-					state = GolemState.Attack;
-				}
-			}
-			else
-			{
-				state = GolemState.Idle;
-			}
-		}
-		else
-		{
-			state= GolemState.Idle;
+			target = collider.gameObject;
+			state= GolemState.Move;
+		
 		}
 	}
 
 
-#if UNITY_EDITOR
-	private void OnDrawGizmos()
+	private void OnTriggerExit(Collider other)
 	{
-		Handles.color = Color.red;
-		Handles.DrawSolidArc(transform.position, Vector3.up, Quaternion.Euler(0f, -searchAngle, 0f) * transform.forward, searchAngle * 2f, searchArea.radius);
+		if (other.tag == "Player")
+		{
+			target = null;
+		}
 	}
-#endif
+
+
+
 
 	//ダメージ処理
 	public void Damage(float damage)
@@ -146,7 +127,7 @@ public class Golem : BaseEnemy,IDamageable
 		//ダメージ用のタイムラインを再生
 		TLDamage.Play();
 		currnethp -= damage;
-		Debug.Log("HP" + currnethp);
+		Debug.Log("GolemHP" + currnethp);
 		if (currnethp <= 0)
 		{
 			Death();
@@ -167,6 +148,14 @@ public class Golem : BaseEnemy,IDamageable
 
 	public void DeathObject()
 	{
-		Destroy(gameObject);
+		Destroy(this.gameObject);
 	}
+
+#if UNITY_EDITOR
+	private void OnDrawGizmos()
+	{
+		Handles.color = Color.red;
+		Handles.DrawSolidArc(transform.position, Vector3.up, Quaternion.Euler(0f, -searchAngle, 0f) * transform.forward, searchAngle * 2f, searchArea.radius);
+	}
+#endif
 }
