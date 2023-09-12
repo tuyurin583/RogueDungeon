@@ -32,7 +32,11 @@ public class BaseEnemy : MonoBehaviour
 	protected PlayableDirector TLDamage;
 	[SerializeField]
 	protected PlayableDirector TLDeath;
-	
+	//ドロップするアイテムのプレハブ
+	public GameObject itemPrefab;
+	// ドロップ確率
+	public float dropChance = 0.5f; 
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -40,9 +44,15 @@ public class BaseEnemy : MonoBehaviour
         animator=GetComponent<Animator>();
         rb=GetComponent<Rigidbody>();
 		agent=GetComponent<NavMeshAgent>();
-		
+	}
 
-
+	public void DropItem()
+	{
+		//設定したアイテムを確率でドロップさせる
+		if (Random.value < dropChance)
+		{
+			Instantiate(itemPrefab, transform.position + Vector3.up, Quaternion.identity);
+		}
 	}
 
 }

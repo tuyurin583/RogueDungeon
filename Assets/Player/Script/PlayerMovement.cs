@@ -24,11 +24,11 @@ public class PlayerMovement : MonoBehaviour
     
 
     //移動アクション
-    [SerializeField]
     private InputAction movement;
     //ジャンプアクション
-    [SerializeField]
     private InputAction jump;
+    //アイテムを拾うアクション
+    private InputAction pickup;
 
     //PlayerAttackのスクリプトの参照
     private PlayerAttack playerAttack;
@@ -42,6 +42,7 @@ public class PlayerMovement : MonoBehaviour
         //移動アクションを作成
         movement = GetComponent<PlayerInput>().actions["Move"];
         jump = GetComponent<PlayerInput>().actions["Jump"];
+        pickup = GetComponent<PlayerInput>().actions["PickUp"];
         //PlayerAttackスクリプトの参照を取得
         playerAttack = GetComponent<PlayerAttack>();
 
@@ -77,11 +78,14 @@ public class PlayerMovement : MonoBehaviour
             animator.SetBool("Jump", false);
        
         }
+
+        if (pickup.ReadValue<float>() > 0)
+        {
+            PickupItem();
+        }
+
+        
     }
-
-   
-
-	
 
 	//アニメションを更新する関数
 	private void UpdateAnimation(Vector2 moveInput)
@@ -105,4 +109,14 @@ public class PlayerMovement : MonoBehaviour
     {
         return Physics.Raycast(transform.position, Vector3.down, 0.1f, groundLayer);
     }
+
+    public void PickupItem()
+    {
+        
+    }
+
+   
+
+    
+	
 }

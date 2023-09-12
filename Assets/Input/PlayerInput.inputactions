@@ -42,9 +42,9 @@
                     "initialStateCheck": false
                 },
                 {
-                    "name": "Skill1",
+                    "name": "PickUp",
                     "type": "Button",
-                    "id": "d83362cf-81b9-48b4-b6ea-5415aeb49370",
+                    "id": "782f69cf-196d-4daf-9d8e-b9deb4fa89b0",
                     "expectedControlType": "Button",
                     "processors": "",
                     "interactions": "",
@@ -296,12 +296,12 @@
                 },
                 {
                     "name": "",
-                    "id": "91623bf2-8894-459a-885a-ad716dc1b6e8",
-                    "path": "<Keyboard>/e",
+                    "id": "b27c5222-50c6-4126-9a5c-0dc2bb7b2780",
+                    "path": "<Keyboard>/f",
                     "interactions": "",
                     "processors": "",
                     "groups": "Keyboard&Mouse",
-                    "action": "Skill1",
+                    "action": "PickUp",
                     "isComposite": false,
                     "isPartOfComposite": false
                 }
