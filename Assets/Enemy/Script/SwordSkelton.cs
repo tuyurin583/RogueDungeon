@@ -32,8 +32,10 @@ public class SwordSkelton : BaseEnemy, IDamageable
 	//現在の目的地
 	private int currnetPointIndex = 0;
 	[SerializeField]
+	private float searchAngle = 45f;
+	[SerializeField]
 	private SphereCollider searchArea;
-	
+
 
 	// Start is called before the first frame update
 	void Start()
@@ -154,7 +156,7 @@ public class SwordSkelton : BaseEnemy, IDamageable
 			{
 				agent.destination = collider.transform.position;
 				//プレイヤーとの距離が一定値以下になったら攻撃状態にする
-				if (distanceToPlayer <= attackDistance)
+				if (distanceToPlayer <= attackRange)
 				{
 					state = SkeltonState.Attack;
 				}
@@ -166,7 +168,6 @@ public class SwordSkelton : BaseEnemy, IDamageable
 		}
 	}
 
-	
 #if UNITY_EDITOR
 	private void OnDrawGizmos()
 	{
@@ -174,4 +175,5 @@ public class SwordSkelton : BaseEnemy, IDamageable
 		Handles.DrawSolidArc(transform.position, Vector3.up, Quaternion.Euler(0f, -searchAngle, 0f) * transform.forward, searchAngle * 2f, searchArea.radius);
 	}
 #endif
+
 }

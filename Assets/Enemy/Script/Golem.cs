@@ -20,9 +20,11 @@ public class Golem : BaseEnemy, IDamageable
 	}
 	public GolemState state = GolemState.Idle;
 	[SerializeField]
-	private SphereCollider searchArea;
-	[SerializeField]
 	private GameObject target;
+	[SerializeField]
+	private float searchAngle = 45f;
+	[SerializeField]
+	private SphereCollider searchArea;
 	// Start is called before the first frame update
 	void Start()
 	{
@@ -66,8 +68,8 @@ public class Golem : BaseEnemy, IDamageable
 			agent.destination = target.transform.position;
 			// 自分とターゲットの距離を計算
 			float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
-			//自分とターゲットの距離がattackdistanceよりも小さい時
-			if (distanceToTarget <= attackDistance)
+			//自分とターゲットの距離がattackRangeよりも小さい時
+			if (distanceToTarget <= attackRange)
 			{
 				//Attack状態に推移する
 				state = GolemState.Attack;
@@ -150,7 +152,6 @@ public class Golem : BaseEnemy, IDamageable
 	{
 		Destroy(this.gameObject);
 	}
-
 #if UNITY_EDITOR
 	private void OnDrawGizmos()
 	{

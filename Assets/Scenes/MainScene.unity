@@ -8462,6 +8462,43 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &661246829 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 4617399123708492162, guid: 9beb1ecf06b187b46be2743e725faa79, type: 3}
+  m_PrefabInstance: {fileID: 895288386}
+  m_PrefabAsset: {fileID: 0}
+--- !u!135 &661246831 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 1336346809632657055, guid: 9beb1ecf06b187b46be2743e725faa79, type: 3}
+  m_PrefabInstance: {fileID: 895288386}
+  m_PrefabAsset: {fileID: 0}
+--- !u!114 &661246832
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 661246829}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e47b7b739b3628440bc2815bd06eb568, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  onTriggerStay:
+    m_PersistentCalls:
+      m_Calls:
+      - m_Target: {fileID: 1861095437}
+        m_TargetAssemblyTypeName: Demon, Assembly-CSharp
+        m_MethodName: OnDetectObject
+        m_Mode: 0
+        m_Arguments:
+          m_ObjectArgument: {fileID: 0}
+          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+          m_IntArgument: 0
+          m_FloatArgument: 0
+          m_StringArgument: 
+          m_BoolArgument: 0
+        m_CallState: 2
 --- !u!1 &669425124
 GameObject:
   m_ObjectHideFlags: 1
@@ -8898,6 +8935,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Demon
       objectReference: {fileID: 0}
+    - target: {fileID: 7921987525858848491, guid: 9beb1ecf06b187b46be2743e725faa79, type: 3}
+      propertyPath: m_TagString
+      value: Enemy
+      objectReference: {fileID: 0}
     - target: {fileID: 7925152172363035575, guid: 9beb1ecf06b187b46be2743e725faa79, type: 3}
       propertyPath: m_LocalScale.x
       value: 4
@@ -8961,6 +9002,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 7921987525858848491, guid: 9beb1ecf06b187b46be2743e725faa79, type: 3}
       insertIndex: -1
       addedObject: {fileID: 1861095437}
+    - targetCorrespondingSourceObject: {fileID: 4617399123708492162, guid: 9beb1ecf06b187b46be2743e725faa79, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 661246832}
   m_SourcePrefab: {fileID: 100100000, guid: 9beb1ecf06b187b46be2743e725faa79, type: 3}
 --- !u!1 &919265729
 GameObject:
@@ -12550,6 +12594,10 @@ PrefabInstance:
       propertyPath: m_LocalRotation.z
       value: 0.1865663
       objectReference: {fileID: 0}
+    - target: {fileID: 4480529170899754058, guid: 8e81e79300d28ee4a89c14e5b4ff3e21, type: 3}
+      propertyPath: m_Enabled
+      value: 1
+      objectReference: {fileID: 0}
     - target: {fileID: 4558176896216062471, guid: 8e81e79300d28ee4a89c14e5b4ff3e21, type: 3}
       propertyPath: m_LocalRotation.w
       value: -0.8610313
@@ -16071,21 +16119,18 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: a6b63d7fb0f894942a11057ae9016575, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  searchAngle: 45
-  attackDistance: 5
-  Maxhp: 50
+  attackRange: 5
+  Maxhp: 300
   currnethp: 0
   TLAttack: []
   TLDamage: {fileID: 0}
   TLDeath: {fileID: 0}
-  itemPrefab: {fileID: 0}
-  dropChance: 0.5
   state: 0
-  bombPrefab: {fileID: 193102649595347989, guid: 6ad98499a16635743a8a8c41f1558506, type: 3}
-  bombSpawnRange: 10
-  bombSpawnInterval: 5
-  MaxBombCount: 10
-  currnetBombCount: 0
+  target: {fileID: 444411491}
+  searchAngle: 75
+  searchArea: {fileID: 661246831}
+  IsWait: 0
+  waitTime: 3
 --- !u!1 &1872031172
 GameObject:
   m_ObjectHideFlags: 1
@@ -16590,6 +16635,14 @@ PrefabInstance:
       propertyPath: patrolPositions.Array.data[2]
       value: 
       objectReference: {fileID: 1098724371}
+    - target: {fileID: 560346332693409991, guid: f054fdaa31d91ff4b94f0d505881df86, type: 3}
+      propertyPath: m_LocalPosition.x
+      value: -0
+      objectReference: {fileID: 0}
+    - target: {fileID: 560346332693409991, guid: f054fdaa31d91ff4b94f0d505881df86, type: 3}
+      propertyPath: m_LocalPosition.z
+      value: 2.05
+      objectReference: {fileID: 0}
     - target: {fileID: 1896651530935885565, guid: f054fdaa31d91ff4b94f0d505881df86, type: 3}
       propertyPath: m_Events.m_Events.Array.size
       value: 2
@@ -16629,6 +16682,14 @@ PrefabInstance:
     - target: {fileID: 1896651530935885565, guid: f054fdaa31d91ff4b94f0d505881df86, type: 3}
       propertyPath: m_Events.m_Events.Array.data[1].m_PersistentCalls.m_Calls.Array.data[0].m_Arguments.m_ObjectArgumentAssemblyTypeName
       value: UnityEngine.Object, UnityEngine
+      objectReference: {fileID: 0}
+    - target: {fileID: 2082221198387267411, guid: f054fdaa31d91ff4b94f0d505881df86, type: 3}
+      propertyPath: searchArea
+      value: 
+      objectReference: {fileID: 5940468271598860916}
+    - target: {fileID: 2082221198387267411, guid: f054fdaa31d91ff4b94f0d505881df86, type: 3}
+      propertyPath: searchAngle
+      value: 50
       objectReference: {fileID: 0}
     - target: {fileID: 2461246099184267213, guid: f054fdaa31d91ff4b94f0d505881df86, type: 3}
       propertyPath: m_LocalPosition.x
@@ -17171,6 +17232,11 @@ PrefabInstance:
       insertIndex: -1
       addedObject: {fileID: 296257180}
   m_SourcePrefab: {fileID: 100100000, guid: f054fdaa31d91ff4b94f0d505881df86, type: 3}
+--- !u!135 &5940468271598860916 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 1062632262285256308, guid: f054fdaa31d91ff4b94f0d505881df86, type: 3}
+  m_PrefabInstance: {fileID: 5940468271598860915}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1001 &7389529308248150579
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -17523,6 +17589,10 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 1807358546615751864, guid: 368179304351df940b08d25474b2eac1, type: 3}
+      propertyPath: searchArea
+      value: 
+      objectReference: {fileID: 7389529308248150580}
     - target: {fileID: 2289316624761594045, guid: 368179304351df940b08d25474b2eac1, type: 3}
       propertyPath: m_LocalPosition.x
       value: -0.47294003
@@ -18124,6 +18194,11 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 368179304351df940b08d25474b2eac1, type: 3}
+--- !u!135 &7389529308248150580 stripped
+SphereCollider:
+  m_CorrespondingSourceObject: {fileID: 1757108025856693209, guid: 368179304351df940b08d25474b2eac1, type: 3}
+  m_PrefabInstance: {fileID: 7389529308248150579}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1660057539 &9223372036854775807
 SceneRoots:
   m_ObjectHideFlags: 0

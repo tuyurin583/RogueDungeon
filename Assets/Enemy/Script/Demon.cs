@@ -1,6 +1,11 @@
 using System.Collections;
 using System.Collections.Generic;
+using Unity.IO.LowLevel.Unsafe;
+using UnityEditor;
 using UnityEngine;
+using UnityEngine.AI;
+using static Golem;
+using static SwordSkelton;
 
 public class Demon : BaseEnemy
 {
@@ -16,29 +21,22 @@ public class Demon : BaseEnemy
         Death,
     }
     public DemonState state = DemonState.Idle;
-
-    //罠のプレハブ
-    [SerializeField]
-    public GameObject bombPrefab;
-	//罠の生成範囲
-    [SerializeField]
-	public float bombSpawnRange = 10f;
-	//罠の生成感覚
+    public GameObject target;
 	[SerializeField]
-    public float bombSpawnInterval = 5f;
-    //罠の生成タイマー
-    private float bombSpawnTimer;
-    //罠の最大値
-    [SerializeField]
-    public int MaxBombCount = 10;
-    //罠の生成数
-    public int currnetBombCount = 0;
-   
-
+	private float searchAngle = 45f;
+	[SerializeField]
+	private SphereCollider searchArea;
+	[SerializeField]
+	private bool IsWait=false;
+	[SerializeField,Header("待機時間")]
+	private float waitTime = 3f;
 	// Start is called before the first frame update
 	void Start()
     {
-        
+        //HPの初期設定
+        currnethp = Maxhp;
+		agent = GetComponent<NavMeshAgent>();
+		animator = GetComponent<Animator>();
     }
 
     // Update is called once per frame
@@ -52,42 +50,97 @@ public class Demon : BaseEnemy
             case DemonState.Move:
                 MoveState();
                 break;
+            case DemonState.Attack1:
+                break;
         }
     }
 
     private void IdleState()
     {
-        //タイマーを減らす
-        bombSpawnTimer -= Time.deltaTime;
+		if (IsWait)
+		{
+			//すでに待機状態の場合なにもしない
+			return;
+		}
 
-        //爆弾を生成するか判定
-        if (bombSpawnTimer <= 0f&&currnetBombCount<MaxBombCount)
-        {
-            //爆弾を生成する関数呼び出し
-            SpawnBomb();
-            //タイマーリセット
-            bombSpawnTimer=bombSpawnInterval;
-            //生成数を増やす
-            currnetBombCount++;
-        }
-        state = DemonState.Move;
-    }
-
-    private void SpawnBomb()
-    {
-		//デーモンの現在の位置からランダムな位置にオフセットを計算する
-	    Vector3 offset = new Vector3(Random.Range(-bombSpawnRange, bombSpawnRange), 0, Random.Range(-bombSpawnRange, bombSpawnRange));
-		//オフセットした位置にY軸+1する
-		Vector3 spawnPosition = transform.position + offset + Vector3.up;
-		//爆弾のプレハブをスポーン位置にインスタンス化する（別の変数に代入する）
-		GameObject bomb = Instantiate(bombPrefab, spawnPosition, transform.rotation);
-		//爆弾に自分を親として設定する（爆弾が消えたときに生成数を減らすため）
-		bomb.transform.parent = transform;
+		
+		if (!target)
+		{
+			// プレイヤーを見つけたときに待機コルーチンを開始
+			StartCoroutine(WaitForIdle(waitTime));
+		}
 	}
-
 
 	private void MoveState()
     {
-        state = DemonState.Idle;
+		//ターゲットがいる時
+		if (target)
+		{
+			//ターゲットの座標に向ける
+			transform.LookAt(target.transform);
+			//プレイヤーを追いかける
+			agent.destination = target.transform.position;
+			// 自分とターゲットの距離を計算
+			float distanceToTarget = Vector3.Distance(transform.position, target.transform.position);
+			animator.SetBool("Run", true);
+			//自分とターゲットの距離がattackRangeよりも小さい時
+			if (distanceToTarget <= attackRange)
+			{
+				int radomAttack = Random.Range(1,4);
+
+				switch (radomAttack)
+				{
+					case 1:
+					state=DemonState.Attack1;
+					break;
+					case 2:
+					state=DemonState.Attack2;
+					break;
+					case 3:
+					state=DemonState.Attack3;
+					break;
+				}
+			}
+		}
+		else
+		{
+			agent.SetDestination(transform.position); // 移動を停止
+			animator.SetBool("Run", false); // 移動アニメーションを停止
+			state = DemonState.Idle;
+		}
+	}
+
+    private void Attack1State()
+    {
+
     }
+
+	public void OnDetectObject(Collider collider)
+	{
+		if (collider.CompareTag("Player"))
+		{
+			target = collider.gameObject;
+			state = DemonState.Move;
+		}
+	}
+
+	private IEnumerator WaitForIdle(float seconds)
+	{
+		// 待機中の状態を示すフラグを設定
+		IsWait = true;
+		// 指定した秒数待機
+		yield return new WaitForSeconds(seconds);
+		// 待機が終了したらフラグをリセット
+		IsWait = false;
+		// 待機後の状態へ遷移
+		state = DemonState.Move;
+	}
+
+#if UNITY_EDITOR
+	private void OnDrawGizmos()
+	{
+		Handles.color = Color.red;
+		Handles.DrawSolidArc(transform.position, Vector3.up, Quaternion.Euler(0f, -searchAngle, 0f) * transform.forward, searchAngle * 2f, searchArea.radius);
+	}
+#endif
 }

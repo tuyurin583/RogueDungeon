@@ -137,13 +137,17 @@ public class PlayerAttack : MonoBehaviour
         //敵かどうか調べる
         if (!hitobj.CompareTag("Enemy")) { return; }
         //ヒットしたオブジェクトのIDamageableを取得する
-        IDamageable damageHit = hitobj.GetComponent<IDamageable>();
-		//ヒットしたオブジェクトのIShieldableを取得する
-        IShieldable  shieldHit=hitobj.GetComponent<IShieldable>();
-		//ダメージ判定が実装されていなければダメージ判定を行わない
-		if (damageHit == null) { return; }
-        //ダメージを与える
-        damageHit.Damage(atk);
+        if (IsAttack == true)
+        {
+            IDamageable damageHit = hitobj.GetComponent<IDamageable>();
+            //ヒットしたオブジェクトのIShieldableを取得する
+            IShieldable shieldHit = hitobj.GetComponent<IShieldable>();
+
+            //ダメージ判定が実装されていなければダメージ判定を行わない
+            if (damageHit == null) { return; }
+            //ダメージを与える
+            damageHit.Damage(atk);
+        }
         //shieldHit.TakeShieldDamage(atk);
 	}
 }

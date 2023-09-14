@@ -13,10 +13,8 @@ public class BaseEnemy : MonoBehaviour
     Rigidbody rb;
 	//NavMeshAgent
 	protected NavMeshAgent agent;
-	[SerializeField,Header("視野")]
-	public float searchAngle = 45f;
 	[SerializeField]
-	protected float attackDistance=5;
+	protected float attackRange=5;
 	protected bool IsDead = false;
 	[Header("HP")]
 	[SerializeField]
@@ -32,10 +30,11 @@ public class BaseEnemy : MonoBehaviour
 	protected PlayableDirector TLDamage;
 	[SerializeField]
 	protected PlayableDirector TLDeath;
+	
 	//ドロップするアイテムのプレハブ
-	public GameObject itemPrefab;
+	//public GameObject itemPrefab;
 	// ドロップ確率
-	public float dropChance = 0.5f; 
+	//public float dropChance = 0.5f; 
 
 
 	// Start is called before the first frame update
@@ -46,6 +45,7 @@ public class BaseEnemy : MonoBehaviour
 		agent=GetComponent<NavMeshAgent>();
 	}
 
+	/*
 	public void DropItem()
 	{
 		//設定したアイテムを確率でドロップさせる
@@ -53,6 +53,7 @@ public class BaseEnemy : MonoBehaviour
 		{
 			Instantiate(itemPrefab, transform.position + Vector3.up, Quaternion.identity);
 		}
-	}
+	}*/
+
 
 }

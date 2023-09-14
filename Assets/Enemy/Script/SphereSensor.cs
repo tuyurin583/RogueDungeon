@@ -9,7 +9,8 @@ public class SphereSensor : MonoBehaviour
 {
 	//private SphereCollider searchArea = default;
 	[SerializeField] private TriggerEvent onTriggerStay = new TriggerEvent();
-	BaseEnemy enemy;
+	
+	
 
 	private void OnTriggerStay(Collider target)
 	{
