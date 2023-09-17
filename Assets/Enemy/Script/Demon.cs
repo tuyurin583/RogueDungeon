@@ -1,11 +1,8 @@
 using System.Collections;
 using System.Collections.Generic;
-using Unity.IO.LowLevel.Unsafe;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
-using static Golem;
-using static SwordSkelton;
 
 public class Demon : BaseEnemy
 {
@@ -15,11 +12,11 @@ public class Demon : BaseEnemy
         Move,
         Attack1,
         Attack2,
-        Attack3,
         ModeChange,
         Damage,
         Death,
-    }
+		Freeze
+	}
     public DemonState state = DemonState.Idle;
     public GameObject target;
 	[SerializeField]
@@ -30,6 +27,9 @@ public class Demon : BaseEnemy
 	private bool IsWait=false;
 	[SerializeField,Header("待機時間")]
 	private float waitTime = 3f;
+	[SerializeField, Range(0.0f, 1.0f), Header("次の攻撃に移る確率")]
+	private float nextAttack = 0.3f;
+
 	// Start is called before the first frame update
 	void Start()
     {
@@ -51,7 +51,11 @@ public class Demon : BaseEnemy
                 MoveState();
                 break;
             case DemonState.Attack1:
+				Attack1State();
                 break;
+			case DemonState.Attack2:
+				Attack2State();
+				break;
         }
     }
 
@@ -86,34 +90,57 @@ public class Demon : BaseEnemy
 			//自分とターゲットの距離がattackRangeよりも小さい時
 			if (distanceToTarget <= attackRange)
 			{
-				int radomAttack = Random.Range(1,4);
-
-				switch (radomAttack)
-				{
-					case 1:
-					state=DemonState.Attack1;
-					break;
-					case 2:
-					state=DemonState.Attack2;
-					break;
-					case 3:
-					state=DemonState.Attack3;
-					break;
-				}
+				state = DemonState.Attack1;
 			}
 		}
 		else
 		{
-			agent.SetDestination(transform.position); // 移動を停止
-			animator.SetBool("Run", false); // 移動アニメーションを停止
+			// 移動を停止
+			agent.SetDestination(transform.position);
+			// 移動アニメーションを停止
+			animator.SetBool("Run", false); 
 			state = DemonState.Idle;
 		}
 	}
 
     private void Attack1State()
     {
-
+		animator.SetBool("Run", false);
+		agent.isStopped = true;
+		TLAttack[0].Play();
+		
     }
+
+	public void NextAttack1()
+	{
+		//ランダムに次の攻撃に推移するか判断
+		float randomChance = Random.value;
+		if (randomChance <= nextAttack)
+		{
+			agent.isStopped = false;
+			state = DemonState.Attack2;
+		}
+		else
+		{
+			TLAttack[0].Stop();
+			agent.isStopped = false;
+			state = DemonState.Idle;
+		}
+	}
+
+	private void Attack2State()
+	{
+		TLAttack[0].Stop();
+		agent.isStopped=true;
+		TLAttack[1].Play();
+		
+	}
+	public void FreezeState()
+	{
+		TLAttack[1].Stop();
+		agent.isStopped = false;
+		state= DemonState.Idle;
+	}
 
 	public void OnDetectObject(Collider collider)
 	{
