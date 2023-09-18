@@ -4,7 +4,7 @@ using UnityEditor;
 using UnityEngine;
 using UnityEngine.AI;
 
-public class Demon : BaseEnemy
+public class Demon : BaseEnemy,IDamageable
 {
     public enum DemonState
     {
@@ -29,6 +29,7 @@ public class Demon : BaseEnemy
 	private float waitTime = 3f;
 	[SerializeField, Range(0.0f, 1.0f), Header("次の攻撃に移る確率")]
 	private float nextAttack = 0.3f;
+	private bool IsDamage = false;
 
 	// Start is called before the first frame update
 	void Start()
@@ -105,10 +106,12 @@ public class Demon : BaseEnemy
 
     private void Attack1State()
     {
-		animator.SetBool("Run", false);
-		agent.isStopped = true;
-		TLAttack[0].Play();
-		
+		if (IsDamage == false)
+		{
+			animator.SetBool("Run", false);
+			agent.isStopped = true;
+			TLAttack[0].Play();
+		}
     }
 
 	public void NextAttack1()
@@ -122,22 +125,27 @@ public class Demon : BaseEnemy
 		}
 		else
 		{
-			TLAttack[0].Stop();
 			agent.isStopped = false;
-			state = DemonState.Idle;
+			state = DemonState.Freeze;
 		}
 	}
 
 	private void Attack2State()
 	{
-		TLAttack[0].Stop();
-		agent.isStopped=true;
-		TLAttack[1].Play();
+		if (IsDamage == false)
+		{
+			TLAttack[0].Stop();
+			agent.isStopped = true;
+			TLAttack[1].Play();
+		}
 		
 	}
 	public void FreezeState()
 	{
+		TLAttack[0].Stop();
 		TLAttack[1].Stop();
+		IsDamage = false;
+		TLDamage.Stop();
 		agent.isStopped = false;
 		state= DemonState.Idle;
 	}
@@ -161,6 +169,42 @@ public class Demon : BaseEnemy
 		IsWait = false;
 		// 待機後の状態へ遷移
 		state = DemonState.Move;
+	}
+
+
+	public void Damage(float damage)
+	{
+		//既に死亡していたらダメージを受けない
+		if (IsDead) return;
+		IsDamage = true;
+		currnethp -= damage;
+		Debug.Log("DemonHP" + currnethp);
+		//ダメージ用のタイムラインを再生
+		TLDamage.Play();
+		if (currnethp <= 0)
+		{
+			Death();
+		}
+		
+	}
+
+	public void Death()
+	{
+		// 既に死亡していたら処理しない
+		if (IsDead) return;
+		IsDead = true;
+		this.enabled = false;
+		//死亡用のタイムラインを再生
+		TLDeath.Play();
+		//敵の動きを止める
+		agent.isStopped = true;
+		DeathEffectActive();
+	}
+
+	public void DeathObject()
+	{
+		Destroy(this.gameObject);
+
 	}
 
 #if UNITY_EDITOR

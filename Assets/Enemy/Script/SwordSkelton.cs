@@ -122,7 +122,7 @@ public class SwordSkelton : BaseEnemy, IDamageable
 		TLDeath.Play();
 		//“G‚Ì“®‚«‚ðŽ~‚ß‚é
 		agent.isStopped = true;
-		
+		DeathEffectActive();
 	}
 
 	public void DeathObject()

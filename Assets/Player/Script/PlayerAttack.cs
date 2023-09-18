@@ -23,6 +23,7 @@ public class PlayerAttack : MonoBehaviour
     private PlayableDirector[] tl;
     //アクションフラグ
     private bool avoid;
+    
 
     // Start is called before the first frame update
     void Start()
@@ -34,6 +35,7 @@ public class PlayerAttack : MonoBehaviour
 	{
        
     }
+
 
     //攻撃ボタン用
     public void OnAttack(InputAction.CallbackContext context)

@@ -30,7 +30,8 @@ public class BaseEnemy : MonoBehaviour
 	protected PlayableDirector TLDamage;
 	[SerializeField]
 	protected PlayableDirector TLDeath;
-	
+	[SerializeField]
+	protected GameObject DeathEffect;
 	//ドロップするアイテムのプレハブ
 	//public GameObject itemPrefab;
 	// ドロップ確率
@@ -54,6 +55,15 @@ public class BaseEnemy : MonoBehaviour
 			Instantiate(itemPrefab, transform.position + Vector3.up, Quaternion.identity);
 		}
 	}*/
+
+	protected void DeathEffectActive()
+	{
+		// デスエフェクトが設定されていればそれを生成
+		if (DeathEffect != null)
+		{
+			Instantiate(DeathEffect, transform.position, transform.rotation);
+		}
+	}
 
 
 }
