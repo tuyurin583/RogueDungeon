@@ -366,6 +366,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 1639818050706832, guid: 28fce92923d67c2449f9c3d295c70aef, type: 3}
       insertIndex: -1
       addedObject: {fileID: 5793268206750379305}
+    - targetCorrespondingSourceObject: {fileID: 1639818050706832, guid: 28fce92923d67c2449f9c3d295c70aef, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1135596424556380017}
   m_SourcePrefab: {fileID: 100100000, guid: 28fce92923d67c2449f9c3d295c70aef, type: 3}
 --- !u!1 &7921987525858848491 stripped
 GameObject:
@@ -438,6 +441,66 @@ NavMeshAgent:
   m_BaseOffset: 0
   m_WalkableMask: 4294967295
   m_ObstacleAvoidanceType: 4
+--- !u!114 &1135596424556380017
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7921987525858848491}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e52de21a22b6dd44c9cc19f810c65059, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  m_Events:
+    m_Signals:
+    - {fileID: 11400000, guid: ce8165645467f5e4cb94aa981ae8a31a, type: 2}
+    - {fileID: 11400000, guid: a452c6ae0eb5bdc4eaa21eea7c5112a1, type: 2}
+    - {fileID: 11400000, guid: 8bc4b19b7710d444781fe59570b589e5, type: 2}
+    m_Events:
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: Demon, Assembly-CSharp
+          m_MethodName: NextAttack1
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: Demon, Assembly-CSharp
+          m_MethodName: FreezeState
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
+    - m_PersistentCalls:
+        m_Calls:
+        - m_Target: {fileID: 0}
+          m_TargetAssemblyTypeName: Demon, Assembly-CSharp
+          m_MethodName: DeathObject
+          m_Mode: 1
+          m_Arguments:
+            m_ObjectArgument: {fileID: 0}
+            m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
+            m_IntArgument: 0
+            m_FloatArgument: 0
+            m_StringArgument: 
+            m_BoolArgument: 0
+          m_CallState: 2
 --- !u!4 &7925152172363035575 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 4104614698926284, guid: 28fce92923d67c2449f9c3d295c70aef, type: 3}

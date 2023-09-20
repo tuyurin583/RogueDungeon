@@ -86,6 +86,7 @@ public class Golem : BaseEnemy, IDamageable
 	{
 		agent.isStopped = true;
 		TLAttack[0].Play();
+		SoundManager.Instance.PlaySE(SoundManager.SESoundData.SE.GolemAttack);
 		state = GolemState.Freeze;
 	}
 

@@ -6,8 +6,6 @@ using UnityEngine.Playables;
 
 public class PlayerAttack : MonoBehaviour
 {
-    //攻撃用のレイヤーマスク
-    public LayerMask enemyLayer;
     [SerializeField]
     private float atk=30;
     //コンボアクション用
@@ -36,7 +34,6 @@ public class PlayerAttack : MonoBehaviour
        
     }
 
-
     //攻撃ボタン用
     public void OnAttack(InputAction.CallbackContext context)
     {
@@ -52,6 +49,8 @@ public class PlayerAttack : MonoBehaviour
                     case 0:
                         //コンボ回数が0の時タイムラインを再生する
                         tl[0].Play();
+                        //SEのAttackを再生
+                        SoundManager.Instance.PlaySE(SoundManager.SESoundData.SE.PlayerAttack);
                         break;
                 }
             }
@@ -96,14 +95,16 @@ public class PlayerAttack : MonoBehaviour
                     tl[0].Stop();
                     //次のタイムラインを再生
                     tl[1].Play();
-                    //コンボ回数の更新
-                    combo_Count = 1;
+					SoundManager.Instance.PlaySE(SoundManager.SESoundData.SE.PlayerAttack);
+					//コンボ回数の更新
+					combo_Count = 1;
                     break;
                 //コンボ回数が1の時の処理(2回目のコンボ攻撃)
                 case 1:
                     tl[1].Stop();
                     tl[2].Play();
-                    combo_Count = 2;
+					SoundManager.Instance.PlaySE(SoundManager.SESoundData.SE.PlayerAttack);
+					combo_Count = 2;
                     break;
                 //コンボ回数が2の時の処理(3回目のコンボ攻撃)
                 case 2:
